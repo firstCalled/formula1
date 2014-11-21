@@ -14,15 +14,18 @@ config(['$routeProvider', function ($routeProvider){
 				}
 			}
 		}).
-		when("/drivers/:id", {
+		when("/drivers/:id/year/:year", {
 			templateUrl:"partials/driver.html", 
 			controller: "driverController",
 			resolve: {
-				driver: function (ergastAPIservice) {
-					return ergastAPIservice.getDriverDetails();
+				driver: function (ergastAPIservice, $route) {
+					return ergastAPIservice.getDriverDetails($route.current.params.id, $route.current.params.year);
 				},
-				races: function (ergastAPIservice) {
-					return ergastAPIservice.getDriverRaces();
+				races: function (ergastAPIservice, $route) {
+					return ergastAPIservice.getDriverRaces($route.current.params.id, $route.current.params.year);
+				},
+				year: function ($route) {
+					return $route.current.params.year;
 				}
 			}
 		}).

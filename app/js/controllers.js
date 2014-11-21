@@ -1,9 +1,33 @@
 angular.module('F1FeederApp.controllers', []).
 
 // Drivers controller
-controller('driversController', function ($scope, drivers){
+controller('driversController', function ($scope, drivers, ergastAPIservice){
+	var now = new Date(),
+		year = now.getYear() + 1900,
+		i = 6;
+	
+	$scope.years = [];
+	while (i--) {
+		$scope.years.push(year - i);
+	}
+
 	$scope.nameFilter = null;
+	$scope.year = 2014;
+	$scope.selectedYear = 2014;
 	$scope.driversList = drivers;
+
+	$scope.changeYear = function (year) {
+		$scope.year = year;
+		ergastAPIservice.getDrivers(year).then(function (drivers) {
+			$scope.driversList = drivers;
+		});
+
+	};
+
+
+	$scope.getDriver = function(id) {
+		ergastAPIservice.getDriverDetails(id);
+	};
 
 	$scope.searchFilter = function (driver) {
 		var re = new RegExp($scope.nameFilter, 'i');
@@ -13,39 +37,11 @@ controller('driversController', function ($scope, drivers){
 }).
 
 // Driver controller
-controller('driverController', function ($scope, $routeParams, ergastAPIservice) {
+controller('driverController', function ($scope, $routeParams, ergastAPIservice, races, driver) {
+
 	$scope.id = $routeParams.id;
-	$scope.races = [];
-	$scope.driver = null;
+	$scope.races = races;
+	$scope.driver = driver;
+	$scope.year = $routeParams.year;
 
-	ergastAPIservice.getDriverDetails($scope.id).success(function (response){
-		$scope.driver = response.MRData.StandingsTable.StandingsLists[0].DriverStandings[0];
 	});
-
-	ergastAPIservice.getDriverRaces($scope.id).success(function (response) {
-		$scope.races = response.MRData.RaceTable.Races;
-	});
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

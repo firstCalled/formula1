@@ -19,12 +19,12 @@
 <div class="main-content">
 	<table class="result-table">
 		<thead>
-			<tr><th colspan="5">Formula 1 2013 Results</th></tr>
+			<tr><th colspan="5">Formula 1 {{year}} Results</th></tr>
 		</thead>
 		<tbody>
-			<tr>
+			<th>
 				<td>Round</td> <td>Grand Prix</td> <td>Team</td> <td>Grid</td> <td>Race</td>
-			</tr>
+			</th>
 			<tr ng-repeat="race in races">
 				<td>{{race.round}}</td>
 				<td><img ng-src="img/flags/{{race.Circuit.Location.country}}.png" />{{race.raceName}}</td>
